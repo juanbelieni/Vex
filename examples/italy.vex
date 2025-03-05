@@ -1,11 +1,11 @@
 flag "Italy" {
     proportions 2:3;
 
-    element background {
+    background { 
         color white;
     }
 
-    element verticalStripes {
+    verticalStripes {
         colors [green, white, red];
     }
 }
