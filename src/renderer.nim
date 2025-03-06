@@ -30,23 +30,23 @@ proc renderElement*(element: Element, width, height: float): string =
     result = fmt"""<g transform="rotate({rotation} {cx} {cy})">""" & "\n"
     let stripeCount = element.colors.len.float
     if element.orientation == oVertical:
-      let stripeWidth = width / stripeCount
+      let stripeWidth = w / stripeCount
       for i, color in element.colors:
         let
-          x = i.float * stripeWidth
-          y = element.y * height
+          x = x + i.float * stripeWidth
+          y = y
           w = stripeWidth
-          h = height
+          h = h
         result &=
           fmt"""<rect x="{x}" y="{y}" width="{w}" height="{h}" fill="{color.toHex()}" />""" &
           "\n"
     else:
-      let stripeHeight = height / stripeCount
+      let stripeHeight = h / stripeCount
       for i, color in element.colors:
         let
-          x = element.x * width
-          y = i.float * stripeHeight
-          w = width
+          x = x
+          y = y + i.float * stripeHeight
+          w = w
           h = stripeHeight
         result &=
           fmt"""<rect x="{x}" y="{y}" width="{w}" height="{h}" fill="{color.toHex()}" />""" &
@@ -54,20 +54,26 @@ proc renderElement*(element: Element, width, height: float): string =
     result &= "</g>" & "\n"
   elif element of CircleElement:
     let element = CircleElement(element)
-    let
+    var
       cx = element.x * width
       cy = element.y * height
       r = element.radius * min(width, height)
+    if element.centered:
+      cx += width / 2
+      cy += height / 2
     result =
       fmt"""<circle cx="{cx}" cy="{cy}" r="{r}" fill="{element.color.toHex()}" transform="rotate({rotation} {cx} {cy})" />""" &
       "\n"
   elif element of EllipseElement:
     let element = EllipseElement(element)
-    let
+    var
       cx = element.x * width
       cy = element.y * height
       rx = element.radiusX * width
       ry = element.radiusY * height
+    if element.centered:
+      cx += width / 2
+      cy += height / 2
     result =
       fmt"""<ellipse cx="{cx}" cy="{cy}" rx="{rx}" ry="{ry}" fill="{element.color.toHex()}" transform="rotate({rotation} {cx} {cy})" />""" &
       "\n"

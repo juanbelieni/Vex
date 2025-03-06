@@ -21,7 +21,7 @@ type
   RectangleElement* = ref object of ColoredElement
 
   StripesElement* = ref object of Element
-    colors*: seq[Color]
+    colors*: seq[Color] = @[]
     orientation*: Orientation = oVertical
 
   CircleElement* = ref object of ColoredElement
