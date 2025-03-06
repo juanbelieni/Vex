@@ -17,13 +17,17 @@ type
     tkComma
     tkEOF
     tkUnknown
+    tkColor
 
   Token* = object
-    kind: TokenKind
-    value: string
+    kind*: TokenKind
+    value*: string
 
 func isSpace(ch: char): bool =
   return ch in {' ', '\t', '\n'}
+
+func isHexDigit(ch: char): bool =
+  return ch in {'0'..'9', 'a'..'f', 'A'..'F'}
 
 func tokenize*(src: string): seq[Token] =
   var tokens: seq[Token] = @[]
@@ -77,6 +81,16 @@ func tokenize*(src: string): seq[Token] =
         numStr.add(src[i])
         inc(i)
       tokens.add(Token(kind: tkNumber, value: numStr))
+    elif ch == '#':
+      var colorStr = "#"
+      inc(i)
+      while i < src.len and isHexDigit(src[i]):
+        colorStr.add(src[i])
+        inc(i)
+      if colorStr.len == 7 or colorStr.len == 4:  # Assuming #RRGGBB format
+        tokens.add(Token(kind: tkColor, value: colorStr))
+      else:
+        tokens.add(Token(kind: tkUnknown, value: colorStr))
     else:
       var str = ""
       while i < src.len and not src[i].isSpace and not (src[i] in {'{', '}', '[', ']', ':', ';', '(', ')', '"', ','}):
