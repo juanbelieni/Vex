@@ -1,5 +1,5 @@
 flag "Italy" {
-    proportions 3:2;
+    proportion 2:3;
 
     verticalStripes {
         colors [green, white, red];

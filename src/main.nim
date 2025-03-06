@@ -9,8 +9,11 @@ when isMainModule:
 
   var italyFlag = Flag(
     name: "Italy",
-    proportions: (3, 2),
-    elements: cast[seq[Element]](@[StripesElement(colors: @[green, white, red])]),
+    proportion: (2, 3),
+    elements: cast[seq[Element]](@[
+      StripesElement(colors: @[green, white, red]),
+      DiamondElement(color: red, width: 0.5, height: 0.5, centered: true)
+    ]),
   )
 
   echo italyFlag.renderToSvg(600)
